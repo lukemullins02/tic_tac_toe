@@ -22,7 +22,12 @@ function player(name, type) {
 const displayController = (function () {
   const createPlayer = (name) => {
     let playerName = prompt(`${name} enter name:`);
-    let playerType = prompt(`${name} Choose X or O`);
+    let playerType;
+    if (name === "Player 1") {
+      playerType = "X";
+    } else {
+      playerType = "O";
+    }
     const playerChosen = player(playerName, playerType);
     return playerChosen;
   };
@@ -45,10 +50,13 @@ const displayController = (function () {
           }
           if (count === 3) {
             console.log("win");
+            return true;
           }
         }
       }
     }
+
+    return false;
   };
 
   const checkRowWin = (type) => {
@@ -64,13 +72,16 @@ const displayController = (function () {
           }
           if (count === 3) {
             console.log("win");
+            return true;
           }
         }
       }
     }
+    return false;
   };
 
   const checkLeftDiagonalWin = (type) => {
+    console.log("hello");
     let arr = gameboard.getBoard();
     let j = 0;
     let count = 0;
@@ -81,9 +92,11 @@ const displayController = (function () {
       }
       if (count === 3) {
         console.log("win");
+        return true;
       }
       j++;
     }
+    return false;
   };
 
   const checkRightDiagonalWin = (type) => {
@@ -97,9 +110,12 @@ const displayController = (function () {
       }
       if (count === 3) {
         console.log("win");
+        return true;
       }
       j--;
     }
+
+    return false;
   };
 
   return {
@@ -115,16 +131,41 @@ const displayController = (function () {
 let player1 = displayController.createPlayer("Player 1");
 let player2 = displayController.createPlayer("Player 2");
 let currentBoard = displayController.createGameboard();
-console.log(currentBoard.getBoard());
-currentBoard.playerChoice(0, 0, "x");
-currentBoard.playerChoice(0, 1, "x");
-currentBoard.playerChoice(0, 2, "x");
-currentBoard.playerChoice(1, 0, "x");
-currentBoard.playerChoice(1, 1, "x");
-currentBoard.playerChoice(1, 2, "x");
-currentBoard.playerChoice(2, 0, "x");
-currentBoard.playerChoice(2, 1, "x");
-currentBoard.playerChoice(2, 2, "x");
+let currentGame = false;
+let checkWin = false;
+let currentPlayer = 0;
+
+console.log(player1, player2);
+
+while (currentGame !== true) {
+  if (currentPlayer === 0) {
+    let x = prompt(`${player1.playerName} please put x coordinate`);
+    let y = prompt(`${player1.playerName} please put y coordinate`);
+    currentBoard.playerChoice(x, y, player1.playerType);
+    currentPlayer = 1;
+    console.log(currentBoard.getBoard());
+  }
+
+  currentGame = displayController.checkRowWin(player1.playerType);
+  currentGame = displayController.checkColumnWin(player1.playerType);
+  currentGame = displayController.checkLeftDiagonalWin(player1.playerType);
+  currentGame = displayController.checkRightDiagonalWin(player1.playerType);
+
+  if (currentPlayer === 1) {
+    let x = prompt(`${player2.playerName} please put x coordinate`);
+    let y = prompt(`${player2.playerName} please put y coordinate`);
+    currentBoard.playerChoice(x, y, player2.playerType);
+    currentPlayer = 0;
+  }
+
+  currentGame = displayController.checkRowWin(player2.playerType);
+  currentGame = displayController.checkColumnWin(player2.playerType);
+  currentGame = displayController.checkLeftDiagonalWin(player2.playerType);
+  currentGame = displayController.checkRightDiagonalWin(player2.playerType);
+}
+
+console.log(currentGame);
+
 displayController.checkRowWin("x");
 displayController.checkColumnWin("x");
 displayController.checkLeftDiagonalWin("x");
