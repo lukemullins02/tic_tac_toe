@@ -138,16 +138,24 @@ function playGame() {
 
   while (currentGame) {
     if (currentPlayer === 0) {
-      // let x = prompt(`${player1.playerName} please put x coordinate`);
-      // let y = prompt(`${player1.playerName} please put y coordinate`);
       let userAns = prompt(
         `${player1.playerName} please put x and y coordinates`
       );
       let x = userAns.substring(0, 1);
       let y = userAns.substring(2);
-      console.log(x, y);
-      currentBoard.playerChoice(x, y, player1.playerType);
       currentPlayer = 1;
+
+      if (x < 3 && x >= 0 && y < 3 && y >= 0) {
+        if (currentBoard.getBoard()[x][y] === ".") {
+          currentBoard.playerChoice(x, y, player1.playerType);
+        } else {
+          alert("Spot already filled");
+          currentPlayer = 0;
+        }
+      } else {
+        alert("Invalid coordinates");
+        currentPlayer = 0;
+      }
     }
 
     displayController.checkRowWin(player1);
@@ -162,16 +170,24 @@ function playGame() {
     }
 
     if (currentPlayer === 1) {
-      // let x = prompt(`${player2.playerName} please put x coordinate`);
-      // let y = prompt(`${player2.playerName} please put y coordinate`);
       let userAns = prompt(
         `${player2.playerName} please put x and y coordinates`
       );
       let x = userAns.substring(0, 1);
       let y = userAns.substring(2);
-      console.log(x, y);
-      currentBoard.playerChoice(x, y, player2.playerType);
       currentPlayer = 0;
+
+      if (x < 3 && x >= 0 && y < 3 && y >= 0) {
+        if (currentBoard.getBoard()[x][y] === ".") {
+          currentBoard.playerChoice(x, y, player2.playerType);
+        } else {
+          alert("Spot already filled");
+          currentPlayer = 1;
+        }
+      } else {
+        alert("Invalid coordinates");
+        currentPlayer = 1;
+      }
     }
 
     if (prevScore2 + 1 === player2.getPlayerScore()) {
