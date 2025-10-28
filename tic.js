@@ -117,6 +117,13 @@ const displayController = (function () {
     }
   };
 
+  const checkWin = (player) => {
+    displayController.checkRowWin(player);
+    displayController.checkColumnWin(player);
+    displayController.checkLeftDiagonalWin(player);
+    displayController.checkRightDiagonalWin(player);
+  };
+
   return {
     createPlayer,
     createGameboard,
@@ -124,6 +131,7 @@ const displayController = (function () {
     checkRowWin,
     checkLeftDiagonalWin,
     checkRightDiagonalWin,
+    checkWin,
   };
 })();
 
@@ -158,10 +166,7 @@ function playGame() {
       }
     }
 
-    displayController.checkRowWin(player1);
-    displayController.checkColumnWin(player1);
-    displayController.checkLeftDiagonalWin(player1);
-    displayController.checkRightDiagonalWin(player1);
+    displayController.checkWin(player1);
 
     if (prevScore1 + 1 === player1.getPlayerScore()) {
       currentBoard.reset();
@@ -196,10 +201,8 @@ function playGame() {
       currentPlayer = 0;
     }
 
-    displayController.checkRowWin(player2);
-    displayController.checkColumnWin(player2);
-    displayController.checkLeftDiagonalWin(player2);
-    displayController.checkRightDiagonalWin(player2);
+    displayController.checkWin(player2);
+
     console.log(currentBoard.getBoard());
     console.log(player2.getPlayerScore(), player1.getPlayerScore());
   }
