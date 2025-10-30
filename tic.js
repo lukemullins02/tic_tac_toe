@@ -141,6 +141,7 @@ const displayWeb = (function () {
       for (let j = 0; j < 3; j++) {
         let tile = document.createElement("div");
         tile.classList.add("tiles");
+        tile.dataset.cord = `${i},${j}`;
         tile.textContent = board.getBoard()[i][j];
         container.appendChild(tile);
       }
@@ -166,6 +167,83 @@ const displayWeb = (function () {
   };
 })();
 
+// function playGame() {
+//   let player1 = displayController.createPlayer("Player 1");
+//   let player2 = displayController.createPlayer("Player 2");
+//   let prevScore1 = 0;
+//   let prevScore2 = 0;
+//   let currentBoard = displayController.createGameboard();
+//   let currentGame = true;
+//   let currentPlayer = 0;
+//   displayWeb.showBoard(currentBoard);
+
+//   let tiles = document.querySelectorAll(".tiles");
+
+//   while (currentGame) {
+//     displayWeb.updateBoard(currentBoard);
+//     if (currentPlayer === 0) {
+//       let userAns = prompt(
+//         `${player1.playerName} please put x and y coordinates`
+//       );
+//       let x = userAns.substring(0, 1);
+//       let y = userAns.substring(2);
+//       currentPlayer = 1;
+
+//       if (x < 3 && x >= 0 && y < 3 && y >= 0) {
+//         if (currentBoard.getBoard()[x][y] === ".") {
+//           currentBoard.playerChoice(x, y, player1.playerType);
+//         } else {
+//           alert("Spot already filled");
+//           currentPlayer = 0;
+//         }
+//       } else {
+//         alert("Invalid coordinates");
+//         currentPlayer = 0;
+//       }
+//     }
+
+//     displayController.checkWin(player1);
+
+//     if (prevScore1 + 1 === player1.getPlayerScore()) {
+//       currentBoard.reset();
+//       prevScore1 = player1.getPlayerScore();
+//       currentPlayer = 0;
+//     }
+
+//     if (currentPlayer === 1) {
+//       let userAns = prompt(
+//         `${player2.playerName} please put x and y coordinates`
+//       );
+//       let x = userAns.substring(0, 1);
+//       let y = userAns.substring(2);
+//       currentPlayer = 0;
+
+//       if (x < 3 && x >= 0 && y < 3 && y >= 0) {
+//         if (currentBoard.getBoard()[x][y] === ".") {
+//           currentBoard.playerChoice(x, y, player2.playerType);
+//         } else {
+//           alert("Spot already filled");
+//           currentPlayer = 1;
+//         }
+//       } else {
+//         alert("Invalid coordinates");
+//         currentPlayer = 1;
+//       }
+//     }
+
+//     if (prevScore2 + 1 === player2.getPlayerScore()) {
+//       currentBoard.reset();
+//       prevScore2 = player2.getPlayerScore();
+//       currentPlayer = 0;
+//     }
+
+//     displayController.checkWin(player2);
+
+//     console.log(currentBoard.getBoard());
+//     console.log(player2.getPlayerScore(), player1.getPlayerScore());
+//   }
+// }
+
 function playGame() {
   let player1 = displayController.createPlayer("Player 1");
   let player2 = displayController.createPlayer("Player 2");
@@ -175,70 +253,50 @@ function playGame() {
   let currentGame = true;
   let currentPlayer = 0;
   displayWeb.showBoard(currentBoard);
+  let tiles = document.querySelectorAll(".tiles");
+  tiles.forEach((tile) => {
+    tile.addEventListener("click", () => {
+      if (currentPlayer === 0) {
+        tile.textContent = player1.playerType;
+        let x = tile.dataset.cord.substring(0, 1);
+        let y = tile.dataset.cord.substring(2);
+        currentBoard.playerChoice(x, y, player1.playerType);
+        displayController.checkWin(player1);
 
-  while (currentGame) {
-    displayWeb.updateBoard(currentBoard);
-    if (currentPlayer === 0) {
-      let userAns = prompt(
-        `${player1.playerName} please put x and y coordinates`
-      );
-      let x = userAns.substring(0, 1);
-      let y = userAns.substring(2);
-      currentPlayer = 1;
-
-      if (x < 3 && x >= 0 && y < 3 && y >= 0) {
-        if (currentBoard.getBoard()[x][y] === ".") {
-          currentBoard.playerChoice(x, y, player1.playerType);
-        } else {
-          alert("Spot already filled");
+        if (prevScore1 + 1 === player1.getPlayerScore()) {
+          const container = document.querySelector(".container");
+          const children = container.children;
+          for (let i = 0; i < 9; i++) {
+            children[i].textContent = ".";
+          }
+          currentBoard.reset();
+          prevScore1 = player1.getPlayerScore();
           currentPlayer = 0;
         }
-      } else {
-        alert("Invalid coordinates");
+
+        currentPlayer = 1;
+      } else if (currentPlayer === 1) {
+        tile.textContent = player2.playerType;
+        let x = tile.dataset.cord.substring(0, 1);
+        let y = tile.dataset.cord.substring(2);
+        currentBoard.playerChoice(x, y, player2.playerType);
+        displayController.checkWin(player2);
+
+        if (prevScore2 + 1 === player2.getPlayerScore()) {
+          const container = document.querySelector(".container");
+          const children = container.children;
+          for (let i = 0; i < 9; i++) {
+            children[i].textContent = ".";
+          }
+          currentBoard.reset();
+          prevScore2 = player2.getPlayerScore();
+          currentPlayer = 0;
+        }
+
         currentPlayer = 0;
       }
-    }
-
-    displayController.checkWin(player1);
-
-    if (prevScore1 + 1 === player1.getPlayerScore()) {
-      currentBoard.reset();
-      prevScore1 = player1.getPlayerScore();
-      currentPlayer = 0;
-    }
-
-    if (currentPlayer === 1) {
-      let userAns = prompt(
-        `${player2.playerName} please put x and y coordinates`
-      );
-      let x = userAns.substring(0, 1);
-      let y = userAns.substring(2);
-      currentPlayer = 0;
-
-      if (x < 3 && x >= 0 && y < 3 && y >= 0) {
-        if (currentBoard.getBoard()[x][y] === ".") {
-          currentBoard.playerChoice(x, y, player2.playerType);
-        } else {
-          alert("Spot already filled");
-          currentPlayer = 1;
-        }
-      } else {
-        alert("Invalid coordinates");
-        currentPlayer = 1;
-      }
-    }
-
-    if (prevScore2 + 1 === player2.getPlayerScore()) {
-      currentBoard.reset();
-      prevScore2 = player2.getPlayerScore();
-      currentPlayer = 0;
-    }
-
-    displayController.checkWin(player2);
-
-    console.log(currentBoard.getBoard());
-    console.log(player2.getPlayerScore(), player1.getPlayerScore());
-  }
+    });
+  });
 }
 
 playGame();
