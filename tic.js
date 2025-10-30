@@ -30,7 +30,6 @@ const displayController = (function () {
   const createPlayer = (name) => {
     let playerName = prompt(`${name} enter name:`);
     let playerType;
-    console.log(playerName);
     if (name === "Player 1") {
       playerType = "X";
     } else {
@@ -135,6 +134,38 @@ const displayController = (function () {
   };
 })();
 
+const displayWeb = (function () {
+  const showBoard = (board) => {
+    const container = document.querySelector(".container");
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        let tile = document.createElement("div");
+        tile.classList.add("tiles");
+        tile.textContent = board.getBoard()[i][j];
+        container.appendChild(tile);
+      }
+    }
+  };
+
+  const updateBoard = (board) => {
+    const container = document.querySelector(".container");
+    const children = container.children;
+    let count = 0;
+
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        children[count].textContent = board.getBoard()[i][j];
+        count++;
+      }
+    }
+  };
+
+  return {
+    showBoard,
+    updateBoard,
+  };
+})();
+
 function playGame() {
   let player1 = displayController.createPlayer("Player 1");
   let player2 = displayController.createPlayer("Player 2");
@@ -143,8 +174,10 @@ function playGame() {
   let currentBoard = displayController.createGameboard();
   let currentGame = true;
   let currentPlayer = 0;
+  displayWeb.showBoard(currentBoard);
 
   while (currentGame) {
+    displayWeb.updateBoard(currentBoard);
     if (currentPlayer === 0) {
       let userAns = prompt(
         `${player1.playerName} please put x and y coordinates`

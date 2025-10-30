@@ -77,7 +77,26 @@ h6 {
 }
 
 /* Project CSS */
+body {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+}
 
 h1 {
   background-color: blue;
+}
+
+.container {
+  display: grid;
+  justify-self: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 400px;
+  height: 400px;
+}
+
+.tiles {
+  background-color: aqua;
+  color: black;
 }
