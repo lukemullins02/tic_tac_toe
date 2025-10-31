@@ -1,3 +1,5 @@
+const usernames = document.querySelector(".usernames");
+
 const gameboard = (function () {
   let board = [
     [".", ".", "."],
@@ -36,6 +38,11 @@ const displayController = (function () {
       playerType = "O";
     }
     const playerChosen = player(playerName, playerType);
+    const newPlayer = document.createElement("p");
+    newPlayer.classList.add("player");
+    newPlayer.textContent = `${playerChosen.playerName}: ${playerChosen.playerType}`;
+    usernames.appendChild(newPlayer);
+
     return playerChosen;
   };
 
