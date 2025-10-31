@@ -181,7 +181,7 @@ const displayWeb = (function () {
 
 //   while (currentGame) {
 //     displayWeb.updateBoard(currentBoard);
-//     if (currentPlayer === 0) {
+//     while (currentPlayer === 0) {
 //       let userAns = prompt(
 //         `${player1.playerName} please put x and y coordinates`
 //       );
@@ -260,7 +260,14 @@ function playGame() {
         tile.textContent = player1.playerType;
         let x = tile.dataset.cord.substring(0, 1);
         let y = tile.dataset.cord.substring(2);
-        currentBoard.playerChoice(x, y, player1.playerType);
+
+        if (currentBoard.getBoard()[x][y] !== ".") {
+          alert("Try again");
+          currentPlayer = 0;
+        } else {
+          currentBoard.playerChoice(x, y, player1.playerType);
+          currentPlayer = 1;
+        }
         displayController.checkWin(player1);
 
         if (prevScore1 + 1 === player1.getPlayerScore()) {
@@ -273,13 +280,17 @@ function playGame() {
           prevScore1 = player1.getPlayerScore();
           currentPlayer = 0;
         }
-
-        currentPlayer = 1;
       } else if (currentPlayer === 1) {
         tile.textContent = player2.playerType;
         let x = tile.dataset.cord.substring(0, 1);
         let y = tile.dataset.cord.substring(2);
-        currentBoard.playerChoice(x, y, player2.playerType);
+        if (currentBoard.getBoard()[x][y] !== ".") {
+          alert("Try again");
+          currentPlayer = 1;
+        } else {
+          currentBoard.playerChoice(x, y, player2.playerType);
+          currentPlayer = 0;
+        }
         displayController.checkWin(player2);
 
         if (prevScore2 + 1 === player2.getPlayerScore()) {
@@ -292,8 +303,6 @@ function playGame() {
           prevScore2 = player2.getPlayerScore();
           currentPlayer = 0;
         }
-
-        currentPlayer = 0;
       }
     });
   });
