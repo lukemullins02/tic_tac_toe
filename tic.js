@@ -2,17 +2,17 @@ const usernames = document.querySelector(".usernames");
 
 const gameboard = (function () {
   let board = [
-    [".", ".", "."],
-    [".", ".", "."],
-    [".", ".", "."],
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
   ];
   const getBoard = () => board;
   const playerChoice = (x, y, type) => (board[x][y] = type);
   const reset = () => {
     board = [
-      [".", ".", "."],
-      [".", ".", "."],
-      [".", ".", "."],
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
     ];
   };
   return { getBoard, playerChoice, reset };
@@ -257,7 +257,6 @@ function playGame() {
   let prevScore1 = 0;
   let prevScore2 = 0;
   let currentBoard = displayController.createGameboard();
-  let currentGame = true;
   let currentPlayer = 0;
   displayWeb.showBoard(currentBoard);
   let tiles = document.querySelectorAll(".tiles");
@@ -268,7 +267,7 @@ function playGame() {
         let x = tile.dataset.cord.substring(0, 1);
         let y = tile.dataset.cord.substring(2);
 
-        if (currentBoard.getBoard()[x][y] !== ".") {
+        if (currentBoard.getBoard()[x][y] !== "") {
           alert("Try again");
           currentPlayer = 0;
         } else {
@@ -281,7 +280,7 @@ function playGame() {
           const container = document.querySelector(".container");
           const children = container.children;
           for (let i = 0; i < 9; i++) {
-            children[i].textContent = ".";
+            children[i].textContent = "";
           }
           currentBoard.reset();
           prevScore1 = player1.getPlayerScore();
@@ -291,7 +290,7 @@ function playGame() {
         tile.textContent = player2.playerType;
         let x = tile.dataset.cord.substring(0, 1);
         let y = tile.dataset.cord.substring(2);
-        if (currentBoard.getBoard()[x][y] !== ".") {
+        if (currentBoard.getBoard()[x][y] !== "") {
           alert("Try again");
           currentPlayer = 1;
         } else {
@@ -304,7 +303,7 @@ function playGame() {
           const container = document.querySelector(".container");
           const children = container.children;
           for (let i = 0; i < 9; i++) {
-            children[i].textContent = ".";
+            children[i].textContent = "";
           }
           currentBoard.reset();
           prevScore2 = player2.getPlayerScore();

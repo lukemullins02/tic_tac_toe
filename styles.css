@@ -87,6 +87,7 @@ body {
   display: flex;
   grid-template-columns: repeat(2, 30px);
   justify-content: space-evenly;
+  padding: 20px 0 20px 0;
 }
 
 .container {
@@ -99,6 +100,11 @@ body {
 }
 
 .tiles {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: aqua;
   color: black;
+  border: 1px solid black;
+  font-size: 2.4rem;
 }
