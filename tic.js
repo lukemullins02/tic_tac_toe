@@ -1,4 +1,5 @@
 const usernames = document.querySelector(".usernames");
+const scores = document.querySelector(".scores");
 
 const gameboard = (function () {
   let board = [
@@ -275,6 +276,11 @@ function playGame() {
   let prevScore2 = 0;
   let currentBoard = displayController.createGameboard();
   let currentPlayer = 0;
+  let displayScore = document.createElement("div");
+  displayScore.textContent = "0:0";
+  displayScore.classList.add("score");
+  scores.appendChild(displayScore);
+
   displayWeb.showBoard(currentBoard);
   let tiles = document.querySelectorAll(".tiles");
   tiles.forEach((tile) => {
@@ -312,6 +318,7 @@ function playGame() {
           for (let i = 0; i < 9; i++) {
             children[i].textContent = "";
           }
+          displayScore.textContent = `${player1.getPlayerScore()}:${player2.getPlayerScore()}`;
           currentBoard.reset();
           prevScore1 = player1.getPlayerScore();
           currentPlayer = 0;
@@ -335,6 +342,7 @@ function playGame() {
           for (let i = 0; i < 9; i++) {
             children[i].textContent = "";
           }
+          displayScore.textContent = `${player1.getPlayerScore()}:${player2.getPlayerScore()}`;
           currentBoard.reset();
           prevScore2 = player2.getPlayerScore();
           currentPlayer = 0;
