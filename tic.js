@@ -2,6 +2,7 @@ const usernames = document.querySelector(".usernames");
 const scores = document.querySelector(".scores");
 const dialog = document.querySelector("#dialog");
 const player_info = document.querySelector(".player_info");
+const newGame = document.querySelector("#newGame");
 
 const gameboard = (function () {
   let board = [
@@ -169,6 +170,7 @@ const displayWeb = (function () {
 
   const startGame = (callback) => {
     dialog.showModal();
+
     player_info.addEventListener("submit", (e) => {
       e.preventDefault();
       dialog.close();
@@ -206,9 +208,13 @@ function playGame() {
   displayScore.textContent = "0:0";
   displayScore.classList.add("score");
   scores.appendChild(displayScore);
-
   displayWeb.showBoard(currentBoard);
   let tiles = document.querySelectorAll(".tiles");
+
+  newGame.addEventListener("click", () => {
+    location.reload();
+  });
+
   tiles.forEach((tile) => {
     tile.addEventListener("click", () => {
       console.log(currentBoard.getBoard());
