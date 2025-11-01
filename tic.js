@@ -123,6 +123,21 @@ const displayController = (function () {
     }
   };
 
+  const checkTie = () => {
+    let arr = gameboard.getBoard();
+    let count = 0;
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if (arr[i][j] !== "") {
+          count++;
+        }
+      }
+    }
+    if (count === 9) {
+      return true;
+    }
+  };
+
   const checkWin = (player) => {
     displayController.checkRowWin(player);
     displayController.checkColumnWin(player);
@@ -138,6 +153,7 @@ const displayController = (function () {
     checkLeftDiagonalWin,
     checkRightDiagonalWin,
     checkWin,
+    checkTie,
   };
 })();
 
@@ -146,6 +162,7 @@ const displayWeb = (function () {
     const container = document.querySelector(".container");
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
+        console.log("Hello");
         let tile = document.createElement("div");
         tile.classList.add("tiles");
         tile.dataset.cord = `${i},${j}`;
@@ -155,22 +172,22 @@ const displayWeb = (function () {
     }
   };
 
-  const updateBoard = (board) => {
-    const container = document.querySelector(".container");
-    const children = container.children;
-    let count = 0;
+  // const updateBoard = (board) => {
+  //   const container = document.querySelector(".container");
+  //   const children = container.children;
+  //   let count = 0;
 
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        children[count].textContent = board.getBoard()[i][j];
-        count++;
-      }
-    }
-  };
+  //   for (let i = 0; i < 3; i++) {
+  //     for (let j = 0; j < 3; j++) {
+  //       children[count].textContent = board.getBoard()[i][j];
+  //       count++;
+  //     }
+  //   }
+  // };
 
   return {
     showBoard,
-    updateBoard,
+    // updateBoard,
   };
 })();
 
@@ -262,17 +279,30 @@ function playGame() {
   let tiles = document.querySelectorAll(".tiles");
   tiles.forEach((tile) => {
     tile.addEventListener("click", () => {
+      console.log(currentBoard.getBoard());
       if (currentPlayer === 0) {
-        tile.textContent = player1.playerType;
         let x = tile.dataset.cord.substring(0, 1);
         let y = tile.dataset.cord.substring(2);
+        let tie = false;
 
-        if (currentBoard.getBoard()[x][y] !== "") {
+        if (currentBoard.getBoard()[x][y] === "") {
+          currentBoard.playerChoice(x, y, player1.playerType);
+          tile.textContent = player1.playerType;
+          currentPlayer = 1;
+        } else {
           alert("Try again");
           currentPlayer = 0;
-        } else {
-          currentBoard.playerChoice(x, y, player1.playerType);
-          currentPlayer = 1;
+        }
+        tie = displayController.checkTie();
+
+        if (tie === true) {
+          const container = document.querySelector(".container");
+          const children = container.children;
+          for (let i = 0; i < 9; i++) {
+            children[i].textContent = "";
+          }
+          currentBoard.reset();
+          currentPlayer = 0;
         }
         displayController.checkWin(player1);
 
@@ -287,15 +317,15 @@ function playGame() {
           currentPlayer = 0;
         }
       } else if (currentPlayer === 1) {
-        tile.textContent = player2.playerType;
         let x = tile.dataset.cord.substring(0, 1);
         let y = tile.dataset.cord.substring(2);
-        if (currentBoard.getBoard()[x][y] !== "") {
+        if (currentBoard.getBoard()[x][y] === "") {
+          currentBoard.playerChoice(x, y, player2.playerType);
+          tile.textContent = player2.playerType;
+          currentPlayer = 0;
+        } else {
           alert("Try again");
           currentPlayer = 1;
-        } else {
-          currentBoard.playerChoice(x, y, player2.playerType);
-          currentPlayer = 0;
         }
         displayController.checkWin(player2);
 
