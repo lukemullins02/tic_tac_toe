@@ -3,6 +3,8 @@ const scores = document.querySelector(".scores");
 const dialog = document.querySelector("#dialog");
 const player_info = document.querySelector(".player_info");
 const newGame = document.querySelector("#newGame");
+const playAgain = document.querySelector("#playAgain");
+console.log(playAgain);
 
 const gameboard = (function () {
   let board = [
@@ -213,6 +215,15 @@ function playGame() {
 
   newGame.addEventListener("click", () => {
     location.reload();
+  });
+
+  playAgain.addEventListener("click", () => {
+    const container = document.querySelector(".container");
+    const children = container.children;
+    for (let i = 0; i < 9; i++) {
+      children[i].textContent = "";
+    }
+    currentBoard.reset();
   });
 
   tiles.forEach((tile) => {
