@@ -50,7 +50,7 @@ const displayController = (function () {
     return currentBoard;
   };
 
-  const checkColumnWin = (player) => {
+  const checkColumnWin = (player, playScore) => {
     let arr = gameboard.getBoard();
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -61,7 +61,7 @@ const displayController = (function () {
           if (arr[x][y] === player.playerType) {
             count++;
           }
-          if (count === 3) {
+          if (count === 3 && playScore === player.getPlayerScore()) {
             console.log("win");
             player.changePlayerScore();
           }
@@ -70,7 +70,7 @@ const displayController = (function () {
     }
   };
 
-  const checkRowWin = (player) => {
+  const checkRowWin = (player, playScore) => {
     let arr = gameboard.getBoard();
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -81,7 +81,7 @@ const displayController = (function () {
           if (arr[x][y] === player.playerType) {
             count++;
           }
-          if (count === 3) {
+          if (count === 3 && playScore === player.getPlayerScore()) {
             console.log("win");
             player.changePlayerScore();
           }
@@ -90,7 +90,7 @@ const displayController = (function () {
     }
   };
 
-  const checkLeftDiagonalWin = (player) => {
+  const checkLeftDiagonalWin = (player, playScore) => {
     let arr = gameboard.getBoard();
     let j = 0;
     let count = 0;
@@ -98,7 +98,7 @@ const displayController = (function () {
       if (arr[i][j] === player.playerType) {
         count++;
       }
-      if (count === 3) {
+      if (count === 3 && playScore === player.getPlayerScore()) {
         console.log("win");
         player.changePlayerScore();
       }
@@ -106,7 +106,7 @@ const displayController = (function () {
     }
   };
 
-  const checkRightDiagonalWin = (player) => {
+  const checkRightDiagonalWin = (player, playScore) => {
     let arr = gameboard.getBoard();
     let j = 0;
     let count = 0;
@@ -114,7 +114,7 @@ const displayController = (function () {
       if (arr[i][j] === player.playerType) {
         count++;
       }
-      if (count === 3) {
+      if (count === 3 && playScore === player.getPlayerScore()) {
         console.log("win");
         player.changePlayerScore();
       }
@@ -138,10 +138,11 @@ const displayController = (function () {
   };
 
   const checkWin = (player) => {
-    displayController.checkRowWin(player);
-    displayController.checkColumnWin(player);
-    displayController.checkLeftDiagonalWin(player);
-    displayController.checkRightDiagonalWin(player);
+    let playScore = player.getPlayerScore();
+    displayController.checkRowWin(player, playScore);
+    displayController.checkColumnWin(player, playScore);
+    displayController.checkLeftDiagonalWin(player, playScore);
+    displayController.checkRightDiagonalWin(player, playScore);
   };
 
   return {
@@ -242,6 +243,7 @@ function playGame() {
           alert("Try again");
           currentPlayer = 0;
         }
+
         displayController.checkWin(player1);
 
         if (prevScore1 + 1 === player1.getPlayerScore()) {
