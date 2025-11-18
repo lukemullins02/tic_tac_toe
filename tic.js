@@ -242,17 +242,6 @@ function playGame() {
           alert("Try again");
           currentPlayer = 0;
         }
-        tie = displayController.checkTie();
-
-        if (tie === true) {
-          const container = document.querySelector(".container");
-          const children = container.children;
-          for (let i = 0; i < 9; i++) {
-            children[i].textContent = "";
-          }
-          currentBoard.reset();
-          currentPlayer = 0;
-        }
         displayController.checkWin(player1);
 
         if (prevScore1 + 1 === player1.getPlayerScore()) {
@@ -264,6 +253,18 @@ function playGame() {
           displayScore.textContent = `${player1.getPlayerScore()}:${player2.getPlayerScore()}`;
           currentBoard.reset();
           prevScore1 = player1.getPlayerScore();
+          currentPlayer = 0;
+        }
+
+        tie = displayController.checkTie();
+
+        if (tie === true) {
+          const container = document.querySelector(".container");
+          const children = container.children;
+          for (let i = 0; i < 9; i++) {
+            children[i].textContent = "";
+          }
+          currentBoard.reset();
           currentPlayer = 0;
         }
       } else if (currentPlayer === 1) {
